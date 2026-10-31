@@ -1,7 +1,7 @@
 services:
   - type: web
     name: tv-uno-party
-    env: node
+    runtime: node
     plan: free
     buildCommand: npm install
     startCommand: node server/server.js
