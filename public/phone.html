@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>TV UNO - Telefon Kontrolcüsü</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/phone.css">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body class="phone-body">
+  <div id="phone-app">
+
+    <!-- 1. JOIN VIEW -->
+    <div id="phone-join-view" class="phone-join-container">
+      <div class="join-brand-header">
+        <div class="join-brand-badge">UNO</div>
+        <div class="join-subtitle">TV Party Kontrolcüsü</div>
+      </div>
+
+      <div class="join-form-card">
+        <div class="form-group">
+          <label>Oda Kodu (TV'deki Kod)</label>
+          <input type="text" id="input-room-code" class="phone-input input-code" maxlength="4" placeholder="KOD">
+        </div>
+
+        <div class="form-group">
+          <label>İsminiz</label>
+          <input type="text" id="input-player-name" class="phone-input" maxlength="14" placeholder="Örn: Ahmet">
+        </div>
+
+        <div class="form-group">
+          <label>Avatarınızı Seçin</label>
+          <div class="avatar-selector-grid" id="avatar-selector">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Renginizi Seçin</label>
+          <div class="color-selector-row" id="color-selector">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+
+        <button id="btn-join-room" class="btn-join-room">
+          ODAYA KATIL 🚀
+        </button>
+      </div>
+    </div>
+
+    <!-- 2. GAME CONTROLLER VIEW -->
+    <div id="phone-game-view" class="phone-game-container" style="display: none;">
+      <!-- Catch UNO floating trigger button -->
+      <button id="btn-catch-uno" class="btn-phone-catch-uno" style="display: none;">
+        ⚡ UNO YAKALA! (+2 Ceza Ver)
+      </button>
+
+      <!-- Top Status Bar -->
+      <div class="phone-top-bar">
+        <div class="phone-player-profile">
+          <div class="phone-my-avatar" id="my-avatar">🎮</div>
+          <div class="phone-my-name" id="my-name">Oyuncu</div>
+        </div>
+
+        <div class="phone-active-color-badge" id="phone-color-badge">
+          <div class="color-dot-phone" id="phone-color-dot" style="background-color: #ff2a4b;"></div>
+          <span id="phone-color-name">Kırmızı</span>
+        </div>
+      </div>
+
+      <!-- Turn Notice Banner -->
+      <div class="phone-turn-banner" id="phone-turn-banner">
+        Oyun başlıyor...
+      </div>
+
+      <!-- TV Table Preview Pill -->
+      <div class="phone-tv-preview-bar">
+        <span>Masadaki Kart:</span>
+        <div class="phone-mini-topcard" id="phone-topcard-preview">
+          <span id="mini-topcard-text">-</span>
+        </div>
+      </div>
+
+      <div class="swipe-instruction-hint" id="swipe-hint">
+        <span>☝️ Kartı yukarı kaydırarak TV'ye fırlat veya tıkla</span>
+      </div>
+
+      <!-- Card Hand Deck (Horizontally Scrollable / Interactive) -->
+      <div class="phone-hand-container" id="phone-hand-container">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <!-- Bottom Action Dock -->
+      <div class="phone-actions-dock">
+        <button id="btn-draw-card" class="btn-phone-draw">
+          <span id="draw-btn-icon">📥</span>
+          <span id="draw-btn-text">KART ÇEK</span>
+        </button>
+
+        <button id="btn-shout-uno" class="btn-phone-uno">
+          🔥 UNO!
+        </button>
+      </div>
+    </div>
+
+    <!-- 3. WILD CARD COLOR PICKER MODAL -->
+    <div id="wild-color-modal" class="color-picker-modal" style="display: none;">
+      <div class="color-picker-content">
+        <h3>BİR RENK SEÇİN</h3>
+        <div class="color-picker-grid">
+          <button class="color-pick-btn btn-red" data-color="red">KIRMIZI</button>
+          <button class="color-pick-btn btn-blue" data-color="blue">MAVİ</button>
+          <button class="color-pick-btn btn-green" data-color="green">YEŞİL</button>
+          <button class="color-pick-btn btn-yellow" data-color="yellow">SARI</button>
+        </div>
+        <button type="button" id="btn-cancel-wild" class="btn-cancel-modal">İptal</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="/js/audio.js"></script>
+  <script src="/js/cards.js"></script>
+  <script src="/js/phone.js"></script>
+</body>
+</html>

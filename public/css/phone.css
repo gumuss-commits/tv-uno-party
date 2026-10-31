@@ -1,0 +1,617 @@
+/* =========================================================
+   Phone Controller Styles - Touch-First Mobile Experience
+   ========================================================= */
+
+body.phone-body {
+  background: #090d16;
+  color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport for iOS Safari / Chrome */
+  width: 100vw;
+  overflow: hidden;
+  position: fixed;
+  font-family: var(--font-body);
+}
+
+#phone-app {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  position: relative;
+}
+
+/* =========================================================
+   1. JOIN SCREEN
+   ========================================================= */
+
+.phone-join-container {
+  flex: 1;
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-y: auto;
+  max-width: 440px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.join-brand-header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+.join-brand-badge {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 900;
+  color: #fdcb6e;
+  background: linear-gradient(135deg, #ff2a4b, #dc143c);
+  padding: 6px 24px;
+  border-radius: 14px;
+  border: 3px solid #ffffff;
+  box-shadow: 0 4px 20px rgba(255, 42, 75, 0.4);
+  margin-bottom: 8px;
+}
+
+.join-subtitle {
+  color: #94a3b8;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.join-form-card {
+  background: rgba(18, 25, 40, 0.9);
+  border: 2px solid rgba(255, 255, 255, 0.12);
+  border-radius: 24px;
+  padding: 24px 20px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 13px;
+  font-weight: 700;
+  color: #cbd5e1;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.phone-input {
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid rgba(255, 255, 255, 0.15);
+  border-radius: 14px;
+  padding: 14px 16px;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 700;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.phone-input:focus {
+  border-color: #3b82f6;
+  background: rgba(255, 255, 255, 0.12);
+}
+
+.input-code {
+  font-family: var(--font-display);
+  font-size: 24px;
+  letter-spacing: 4px;
+  text-align: center;
+  text-transform: uppercase;
+  color: #fdcb6e;
+}
+
+/* Avatar Carousel / Selector */
+.avatar-selector-grid {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 6px 2px;
+  scrollbar-width: none;
+}
+.avatar-selector-grid::-webkit-scrollbar { display: none; }
+
+.avatar-choice-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.06);
+  font-size: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: transform 0.15s, border-color 0.15s;
+}
+
+.avatar-choice-btn.selected {
+  border-color: #3b82f6;
+  background: rgba(59, 130, 246, 0.25);
+  transform: scale(1.15);
+  box-shadow: 0 0 15px rgba(59, 130, 246, 0.6);
+}
+
+/* Color Palette Selector */
+.color-selector-row {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  padding: 4px 0;
+}
+
+.color-choice-dot {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  cursor: pointer;
+  border: 3px solid transparent;
+  transition: transform 0.15s;
+}
+
+.color-choice-dot.selected {
+  border-color: #ffffff;
+  transform: scale(1.18);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.btn-join-room {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: #ffffff;
+  border: none;
+  border-radius: 16px;
+  padding: 16px;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+  transition: transform 0.15s;
+  margin-top: 6px;
+}
+
+.btn-join-room:active {
+  transform: scale(0.97);
+}
+
+/* =========================================================
+   2. IN-GAME CONTROLLER VIEW
+   ========================================================= */
+
+.phone-game-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  position: relative;
+  height: 100%;
+}
+
+/* Top Status Bar */
+.phone-top-bar {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(15, 23, 42, 0.9);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 10;
+}
+
+.phone-player-profile {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.phone-my-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  border: 2px solid #ffffff;
+}
+
+.phone-my-name {
+  font-size: 16px;
+  font-weight: 800;
+  max-width: 110px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.phone-active-color-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 800;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.color-dot-phone {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1.5px solid #ffffff;
+}
+
+/* Turn Alert Banner */
+.phone-turn-banner {
+  margin: 10px 16px 0;
+  padding: 12px 18px;
+  border-radius: 16px;
+  text-align: center;
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 800;
+  background: rgba(255, 255, 255, 0.06);
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  transition: all 0.3s ease;
+}
+
+.phone-turn-banner.my-turn {
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #ffffff;
+  border-color: #fef08a;
+  box-shadow: 0 0 25px rgba(245, 158, 11, 0.5);
+  animation: pulsePlayable 1.2s infinite alternate;
+}
+
+/* Center Table Mini-Preview (What is on TV) */
+.phone-tv-preview-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  padding: 6px 16px;
+  font-size: 13px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+.phone-mini-topcard {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(255, 255, 255, 0.08);
+  padding: 4px 12px;
+  border-radius: 12px;
+}
+
+/* Gesture Hint */
+.swipe-instruction-hint {
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  color: #94a3b8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  margin-top: 4px;
+}
+
+/* =========================================================
+   AUTHENTIC PLAYING CARD FAN (İskambil Kartı Yelpazesi)
+   All cards fit simultaneously on screen in a natural arc!
+   ========================================================= */
+
+.phone-hand-container {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  width: 100%;
+  overflow: visible;
+  padding: 10px 8px 16px;
+  perspective: 1200px;
+}
+
+.card-fan-stage {
+  position: relative;
+  width: 100%;
+  max-width: 440px;
+  height: 290px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Tier Specific Base Vertical Positioning */
+.card-fan-stage .uno-card.tier-top {
+  bottom: 92px;
+}
+
+.card-fan-stage .uno-card.tier-bottom {
+  bottom: 10px;
+}
+
+.card-fan-stage .uno-card.tier-single {
+  bottom: 26px;
+}
+
+/* Fan Card Overrides - 100% SOLID & CRISP */
+.card-fan-stage .uno-card {
+  position: absolute;
+  transform-origin: 50% 125%;
+  transition: transform 0.28s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.2s ease;
+  touch-action: none;
+  cursor: pointer;
+  opacity: 1 !important; /* STRICTLY 100% OPAQUE - NEVER TRANSLUCENT */
+  filter: none !important;
+  border: 3.5px solid #ffffff !important;
+  /* Deep shadow separating overlapping physical cards */
+  box-shadow: -5px 6px 18px rgba(0, 0, 0, 0.7), 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+
+/* Playable Card in Fan: Rises above the hand and glows */
+.card-fan-stage .uno-card.playable {
+  border-color: #ffffff !important;
+  box-shadow: 0 0 0 3px #facc15, -5px 8px 24px rgba(250, 204, 21, 0.75), 0 4px 12px rgba(0, 0, 0, 0.5);
+}
+
+/* Non-Playable Card in Fan: Solid and readable, no transparency */
+.card-fan-stage .uno-card.disabled {
+  opacity: 1 !important; /* NEVER SEE-THROUGH */
+  filter: none !important;
+}
+
+/* Focused / Lifted Card (When player touches or inspects a card) */
+.card-fan-stage .uno-card.card-focused {
+  transform: translateY(-62px) scale(1.22) rotate(0deg) !important;
+  z-index: 200 !important;
+  opacity: 1 !important;
+  filter: brightness(1.05) !important;
+  box-shadow: 0 28px 60px rgba(0, 0, 0, 0.85), 0 0 30px rgba(255, 255, 255, 0.95) !important;
+}
+
+/* Swiping Card Animation (Throwing up toward TV) */
+.card-fan-stage .uno-card.swiping-up {
+  transition: none !important;
+  z-index: 250 !important;
+  pointer-events: none;
+}
+
+.card-fan-stage .uno-card.thrown-to-tv {
+  transition: transform 0.38s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.3s ease !important;
+  transform: translateY(-460px) scale(0.55) rotateX(45deg) !important;
+  opacity: 0 !important;
+  z-index: 300 !important;
+}
+
+/* Bottom Action Bar */
+.phone-actions-dock {
+  background: rgba(13, 18, 28, 0.95);
+  border-top: 2px solid rgba(255, 255, 255, 0.1);
+  padding: 12px 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  backdrop-filter: blur(16px);
+  z-index: 20;
+}
+
+.btn-phone-draw {
+  flex: 1;
+  background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+  color: #ffffff;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  padding: 16px 12px;
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.4);
+  transition: transform 0.1s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-phone-draw.pass-mode {
+  background: linear-gradient(135deg, #64748b 0%, #475569 100%);
+}
+
+.btn-phone-draw:active {
+  transform: scale(0.96);
+}
+
+.btn-phone-uno {
+  background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+  color: #ffffff;
+  border: 3px solid #ffffff;
+  border-radius: 16px;
+  padding: 14px 20px;
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 900;
+  cursor: pointer;
+  box-shadow: 0 4px 20px rgba(239, 68, 68, 0.5);
+  transition: transform 0.1s;
+  animation: pulsePlayable 1.5s infinite alternate;
+}
+
+.btn-phone-uno:active {
+  transform: scale(0.92);
+}
+
+/* Catch Uno floating pill */
+.btn-phone-catch-uno {
+  position: absolute;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #f97316, #ea580c);
+  color: #ffffff;
+  border: 2px solid #ffffff;
+  border-radius: 30px;
+  padding: 10px 22px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 900;
+  box-shadow: 0 6px 20px rgba(249, 115, 22, 0.6);
+  z-index: 50;
+  animation: popIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: pointer;
+}
+
+/* =========================================================
+   3. WILD COLOR PICKER MODAL (Tactile 4-quadrant dial)
+   ========================================================= */
+
+.color-picker-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 20px;
+  animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.color-picker-content {
+  width: 100%;
+  max-width: 320px;
+  text-align: center;
+}
+
+.color-picker-content h3 {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  margin-bottom: 20px;
+  color: #ffffff;
+}
+
+.color-picker-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.color-pick-btn {
+  height: 110px;
+  border-radius: 20px;
+  border: 3px solid #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 900;
+  color: #ffffff;
+  cursor: pointer;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+  transition: transform 0.15s ease;
+}
+
+.color-pick-btn:active {
+  transform: scale(0.94);
+}
+
+.color-pick-btn.btn-red { background: linear-gradient(135deg, var(--uno-red), var(--uno-red-dark)); }
+.color-pick-btn.btn-blue { background: linear-gradient(135deg, var(--uno-blue), var(--uno-blue-dark)); }
+.color-pick-btn.btn-green { background: linear-gradient(135deg, var(--uno-green), var(--uno-green-dark)); }
+.color-pick-btn.btn-yellow {
+  background: linear-gradient(135deg, var(--uno-yellow), var(--uno-yellow-dark));
+  color: #1e2022;
+}
+
+.btn-cancel-modal {
+  margin-top: 16px;
+  background: rgba(255, 255, 255, 0.12);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+  padding: 12px 32px;
+  border-radius: 14px;
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.btn-cancel-modal:active {
+  background: rgba(255, 255, 255, 0.25);
+  transform: scale(0.96);
+}
+
+/* Waiting state in Hand Container */
+.lobby-hand-wait-box {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 12px;
+  padding: 24px;
+  color: #94a3b8;
+}
+
+.lobby-hand-wait-box .wait-icon {
+  font-size: 48px;
+  animation: floatAnim 2s infinite ease-in-out;
+}
+
+.lobby-hand-wait-box .wait-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  color: #ffffff;
+}
+
+.lobby-hand-wait-box .wait-subtitle {
+  font-size: 14px;
+  line-height: 1.4;
+  max-width: 280px;
+}
+
+/* Toast Message */
+.phone-toast {
+  position: fixed;
+  top: 75px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(15, 23, 42, 0.95);
+  border: 2px solid #ef4444;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 25px;
+  font-size: 14px;
+  font-weight: 700;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  z-index: 80;
+  animation: popIn 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+}

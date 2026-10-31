@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TV UNO Party - Büyük Ekran</title>
+  <link rel="stylesheet" href="/css/common.css">
+  <link rel="stylesheet" href="/css/tv.css">
+  <script src="/socket.io/socket.io.js"></script>
+</head>
+<body class="tv-body">
+  <canvas id="confetti-canvas"></canvas>
+
+  <div id="tv-app">
+    <!-- Top Header -->
+    <header class="tv-header">
+      <div class="tv-logo-container">
+        <div class="tv-logo-badge">UNO</div>
+        <div class="tv-logo-subtitle">Party TV</div>
+      </div>
+
+      <div class="tv-header-info">
+        <div class="tv-room-pill">
+          <span>ODA KODU:</span>
+          <span class="code-val" id="tv-room-code">----</span>
+        </div>
+        <button id="btn-fullscreen" class="btn-tv-secondary" title="Tam Ekran">
+          ⛶ Tam Ekran
+        </button>
+      </div>
+    </header>
+
+    <!-- 1. LOBBY VIEW -->
+    <main id="tv-lobby-view" class="tv-lobby-container">
+      <!-- Left: QR Code & Connection Info -->
+      <section class="tv-lobby-qr-card">
+        <h2>TELEFONUNUZLA KATILIN</h2>
+        <p>Kameranızı açıp QR kodu okutun veya tarayıcınızdan adresi girin:</p>
+        
+        <div class="tv-qr-box" id="tv-qr-box">
+          <div style="color: #64748b; font-weight: 700;">QR Yükleniyor...</div>
+        </div>
+
+        <div class="tv-lobby-url-pill" id="tv-join-url">
+          http://.../play
+        </div>
+      </section>
+
+      <!-- Right: Players List & Game Controls -->
+      <section class="tv-lobby-players-card">
+        <div class="tv-lobby-players-header">
+          <h2>
+            <span>KATILAN OYUNCULAR</span>
+            <span class="player-count-badge" id="lobby-player-count">0/8</span>
+          </h2>
+          <div style="display: flex; gap: 12px;">
+            <button id="btn-add-bot" class="btn-tv-secondary">+ Bot Ekle</button>
+            <button id="btn-remove-bot" class="btn-tv-secondary">- Bot Çıkar</button>
+          </div>
+        </div>
+
+        <!-- Players Grid -->
+        <div class="tv-lobby-players-grid" id="lobby-players-grid">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Controls Bar -->
+        <div class="tv-lobby-controls">
+          <button id="btn-start-game" class="btn-tv-primary" disabled>
+            <span>OYUNU BAŞLAT</span>
+            <span style="font-size: 20px;">▶</span>
+          </button>
+        </div>
+      </section>
+    </main>
+
+    <!-- 2. GAME ARENA TABLE VIEW -->
+    <main id="tv-arena-view" class="tv-arena-container" style="display: none;">
+      <div class="tv-table">
+        <!-- Play Direction Orbit -->
+        <div class="direction-orbit" id="direction-orbit">
+          <div class="orbit-arrow">▲</div>
+          <div class="orbit-arrow">▼</div>
+        </div>
+
+        <!-- Center Deck & Discard Pile -->
+        <div class="tv-center-deck-area">
+          <!-- Active Color Beacon (Wild card played) -->
+          <div class="active-color-beacon" id="active-color-beacon" style="display: none;">
+            <div class="color-dot-indicator" id="color-dot"></div>
+            <span id="color-name-text">KIRMIZI</span>
+          </div>
+
+          <!-- Pending Penalty Banner -->
+          <div class="pending-penalty-banner" id="pending-penalty-banner" style="display: none;">
+            💥 BİRİKEN CEZA: +<span id="penalty-count-val">2</span> KART!
+          </div>
+
+          <!-- Draw Pile -->
+          <div class="tv-draw-pile">
+            <!-- Layers for 3D depth -->
+            <div class="deck-layer" style="transform: translate(-3px, -3px);">
+              <div class="uno-card card-back card-lg"></div>
+            </div>
+            <div class="deck-layer" style="transform: translate(-1px, -1px);">
+              <div class="uno-card card-back card-lg"></div>
+            </div>
+            <div class="uno-card card-back card-lg">
+              <div class="card-oval"><span class="uno-logo-text">UNO</span></div>
+            </div>
+            <div class="deck-count-badge" id="deck-count-badge">Deste: 108</div>
+          </div>
+
+          <!-- Discard Pile -->
+          <div class="tv-discard-pile" id="tv-discard-pile">
+            <!-- Under cards for realistic scatter -->
+            <div class="discard-under-card" id="discard-under-1" style="transform: rotate(-6deg);"></div>
+            <div class="discard-under-card" id="discard-under-2" style="transform: rotate(4deg);"></div>
+            <div class="tv-top-card-wrapper" id="tv-top-card-wrapper">
+              <!-- Top card inserted dynamically -->
+            </div>
+          </div>
+        </div>
+
+        <!-- Seated Players Around Table -->
+        <div class="tv-players-layout" id="tv-players-layout">
+          <!-- Populated dynamically based on player count -->
+        </div>
+      </div>
+
+      <!-- Action Ticker Banner at Bottom -->
+      <div class="tv-event-ticker" id="tv-event-ticker">
+        Oyun Hazır!
+      </div>
+    </main>
+
+    <!-- 3. WINNER CELEBRATION MODAL -->
+    <div id="tv-winner-modal" class="tv-winner-modal" style="display: none;">
+      <div class="tv-winner-card">
+        <div class="winner-trophy">🏆</div>
+        <h1 class="winner-title">KAZANAN!</h1>
+        <div class="winner-avatar-huge" id="winner-avatar">👑</div>
+        <div class="winner-name-huge" id="winner-name">Şampiyon</div>
+        <button id="btn-restart-game" class="btn-tv-primary" style="font-size: 24px; padding: 16px 40px;">
+          YENİ OYUN BAŞLAT ↻
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script src="/js/audio.js"></script>
+  <script src="/js/cards.js"></script>
+  <script src="/js/tv.js"></script>
+</body>
+</html>
