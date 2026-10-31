@@ -6,6 +6,14 @@ const path = require('path');
 const QRCode = require('qrcode');
 const roomManager = require('./rooms');
 
+// Global error logging for cloud platforms
+process.on('uncaughtException', (err) => {
+  console.error('UNCAUGHT EXCEPTION:', err);
+});
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('UNHANDLED REJECTION:', reason);
+});
+
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
@@ -17,16 +25,20 @@ app.set('trust proxy', true);
 
 const PORT = process.env.PORT || 3000;
 
-// Determine local IPv4 network address
+// Determine local IPv4 network address safely
 function getLocalIpAddress() {
-  const interfaces = os.networkInterfaces();
-  for (const name of Object.keys(interfaces)) {
-    for (const net of interfaces[name]) {
-      // Find IPv4 and non-internal (e.g. not 127.0.0.1)
-      if (net.family === 'IPv4' && !net.internal) {
-        return net.address;
+  try {
+    const interfaces = os.networkInterfaces() || {};
+    for (const name of Object.keys(interfaces)) {
+      const list = interfaces[name] || [];
+      for (const net of list) {
+        if (net && net.family === 'IPv4' && !net.internal) {
+          return net.address;
+        }
       }
     }
+  } catch (e) {
+    console.warn('Network interface check failed, defaulting to localhost:', e.message);
   }
   return 'localhost';
 }
@@ -37,6 +49,10 @@ const LOCAL_IP = getLocalIpAddress();
 function getBaseUrl(req = null, clientOrigin = null) {
   if (clientOrigin && typeof clientOrigin === 'string' && clientOrigin.startsWith('http')) {
     return clientOrigin.replace(/\/$/, '');
+  }
+  // Render.com automatically provides RENDER_EXTERNAL_URL
+  if (process.env.RENDER_EXTERNAL_URL) {
+    return process.env.RENDER_EXTERNAL_URL.replace(/\/$/, '');
   }
   if (process.env.PUBLIC_URL) {
     return process.env.PUBLIC_URL.replace(/\/$/, '');
@@ -54,6 +70,11 @@ function getBaseUrl(req = null, clientOrigin = null) {
 // Serve static assets
 app.use(express.static(path.join(__dirname, '..', 'public')));
 app.use(express.json());
+
+// Health check endpoint for Render / monitoring
+app.get('/health', (req, res) => {
+  res.status(200).send('OK');
+});
 
 // API: Local & Public Network Info
 app.get('/api/network', (req, res) => {
@@ -355,11 +376,10 @@ io.on('connection', (socket) => {
 });
 
 server.listen(PORT, '0.0.0.0', () => {
-  const displayUrl = process.env.PUBLIC_URL || `http://${LOCAL_IP}:${PORT}`;
+  const displayUrl = process.env.RENDER_EXTERNAL_URL || process.env.PUBLIC_URL || `http://${LOCAL_IP}:${PORT}`;
   console.log(`\n======================================================`);
-  console.log(`🎉 TV UNO OYUN SUNUCUSU BAŞLATILDI!`);
+  console.log(`🎉 TV UNO OYUN SUNUCUSU BAŞLATILDI! (Port: ${PORT})`);
   console.log(`📺 TV EKRANI:    ${displayUrl}/tv`);
   console.log(`📱 TELEFON GİRİŞ: ${displayUrl}/play`);
-  console.log(`💻 YEREL TEST:   http://localhost:${PORT}`);
   console.log(`======================================================\n`);
 });
